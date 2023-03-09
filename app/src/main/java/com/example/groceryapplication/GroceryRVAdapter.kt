@@ -3,11 +3,12 @@ package com.example.groceryapplication
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModel
 import android.widget.TextView
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class GroceryRVAdapter(
+open class GroceryRVAdapter(
     var list: List<GroceryItems>,
     val groceryItemClickInterface: MainActivity
         ): RecyclerView.Adapter<GroceryRVAdapter.GroceryViewHolder>() {
@@ -27,6 +28,9 @@ class GroceryRVAdapter(
 
     interface GroceryItemClickInterface {
         fun OnItemClick(groceryItems: GroceryItems)
+        fun onItemClick(get: GroceryItems) {
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroceryViewHolder {
@@ -37,11 +41,12 @@ class GroceryRVAdapter(
     override fun onBindViewHolder(holder: GroceryViewHolder, position: Int) {
         holder.nameTV.text = list.get(position).itemName
         holder.quantityTV.text= list.get(position).itemQuantity.toString()
-        holder.rateTV.text= list.get(position).itemPrice.toString()
+        holder.rateTV.text="Rs. "+list.get(position).itemPrice.toString()
         val itemTotal:Int = list.get(position).itemPrice * list.get(position).itemQuantity
         holder.amountTV.text= "Rs. " + itemTotal.toString()
         holder.deleteTV.setOnClickListener{
-            groceryItemClickInterface.OnItemClick(List.get(position))
+            
+            groceryItemClickInterface.onItemClick(list.get(position))
         }
     }
 

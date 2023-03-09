@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), GroceryRVAdapter.GroceryItemClickInterface {
 
     lateinit var itemsRV: RecyclerView
     lateinit var addFAB: FloatingActionButton
@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    fun openDialog(){
+
+    fun openDialog() {
         var dialog = Dialog(this)
         dialog.setContentView(R.layout.grocery_add_dialog)
         val CancelBtn = dialog.findViewById<Button>(R.id.idBtnCancel)
@@ -50,39 +51,39 @@ class MainActivity : AppCompatActivity() {
         val itemEdt = dialog.findViewById<EditText>(R.id.idEditItemName)
         val itemQuantityEdt = dialog.findViewById<EditText>(R.id.idEditItemQuantity)
         val itemPriceEdt = dialog.findViewById<EditText>(R.id.idEditItemPrice)
-        CancelBtn.setOnClickListener{
+        CancelBtn.setOnClickListener {
             dialog.dismiss()
         }
 
-        addBtn.setOnClickListener{
 
-            val itemName : String = itemEdt.text.toString()
-            val itemPrice : String = itemPriceEdt.text.toString()
+        addBtn.setOnClickListener {
+            val itemName: String = itemEdt.text.toString()
+            val itemPrice: String = itemPriceEdt.text.toString()
             val itemQuantity: String = itemQuantityEdt.text.toString()
-            val qty :Int= itemQuantity.toInt()
-            val pr : Int = itemPrice.toInt()
-            if (itemName.isNotEmpty() && itemPrice.isNotEmpty() && itemQuantity.isNotEmpty())
-            {
-                val items = GroceryItems(itemName,qty,pr)
+            val qty: Int = itemQuantity.toInt()
+            val pr: Int = itemPrice.toInt()
+            if (itemName.isNotEmpty() && itemPrice.isNotEmpty() && itemQuantity.isNotEmpty()) {
+                val items = GroceryItems(itemName, qty, pr)
                 groceryViewModal.insert(items)
-                Toast.makeText(applicationContext,"item Innserted..", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "item Innserted..", Toast.LENGTH_SHORT).show()
                 groceryRVAdapter.notifyDataSetChanged()
                 dialog.dismiss()
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    "please enter the data ..",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            else{
-
-                Toast.makeText(applicationContext,"please enter the data ..", Toast.LENGTH_SHORT).show()
-            }
-
         }
-         Toast.makeText(applicationContext,"item Innserted..", Toast.LENGTH_SHORT).show()
         dialog.show()
     }
 
-    fun onItemClick(groceryItems: GroceryItems)
-    {
+
+    override fun OnItemClick(groceryItems: GroceryItems) {
         groceryViewModal.delete(groceryItems)
         groceryRVAdapter.notifyDataSetChanged()
-        Toast.makeText(applicationContext,"Item Deleted.." , Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext,"Item Deleted",Toast.LENGTH_SHORT).show()
+
     }
 }
